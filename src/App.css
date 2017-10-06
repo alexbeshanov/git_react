@@ -26,21 +26,21 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.Form_autentification_main{
+.autentification{
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-.Form_autentification{
+.form-autentification{
   display:flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 50%;
 }
-.Form_autentification_design{
+.form-autentification-style{
   border: 1px solid black;
   border-radius: 5px;
   margin-top: 20px;
@@ -63,28 +63,50 @@
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
-.firstPageMain{
+.container{
   display: flex;
   width: 100%;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 }
-.firstPageHeader{
+.container__header{
   display: flex;
   width: 100%;
   justify-content: space-around;
   align-items: center;
 }
-.firstPageHeader a{
+.container__header a{
   text-decoration: none;
-}
-.firstPageHeader a{
   width: 100%;
   background-color: cadetblue;
 }
-.firstPageHeader a:hover{
+.container__header a:hover{
   background-color: aliceblue;
   transition: 0.5s;
 }
+.form-input{
+  background-color: #ffffff;
+  transition: 0.5s;
+}
+.form-input__modificate{
+  background-color: #32CD32;
+  transition: 0.5s;
+  transition: 0.5s;
+}
+.form-button{
+  background-color: red;
+  text-decoration-color: white;
+  transition: 0.5s;
+}
+.form-button p{
+  color: white;
+  opacity: 0.5;
+}
+.form-button__modificate{
+  background-color: #32CD32;
+  transition: 0.5s;
+  text-decoration-color: white;
+}
+
 
