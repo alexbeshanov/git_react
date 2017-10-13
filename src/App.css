@@ -26,25 +26,8 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.autentification{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.form-autentification{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 50%;
-}
-.form-autentification-style{
-  border: 1px solid black;
-  border-radius: 5px;
-  margin-top: 20px;
-  height: 50px;
+html{
+  height: 100%;
 }
 .example-enter {
   opacity: 0.5;
@@ -85,28 +68,3 @@
   background-color: aliceblue;
   transition: 0.5s;
 }
-.form-input{
-  background-color: #ffffff;
-  transition: 0.5s;
-}
-.form-input__modificate{
-  background-color: #32CD32;
-  transition: 0.5s;
-  transition: 0.5s;
-}
-.form-button{
-  background-color: red;
-  text-decoration-color: white;
-  transition: 0.5s;
-}
-.form-button p{
-  color: white;
-  opacity: 0.5;
-}
-.form-button__modificate{
-  background-color: #32CD32;
-  transition: 0.5s;
-  text-decoration-color: white;
-}
-
-
