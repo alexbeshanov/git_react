@@ -1,0 +1,126 @@
+.newobjects{
+    display: flex;
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+    margin: 1%;
+}
+.newobjects a{
+    text-decoration: none;
+}
+.newobjects button{
+    border: none;
+    text-decoration: none;
+    border: solid 1px lightgray;
+    background-color: lightgray;
+    transition: 0.5s;
+    border-radius: 10px;
+}
+.newobjects:hover button{
+    background-color: white;
+    border: solid 1px white;
+    transition: 0.5s;
+    box-shadow: 4px 4px 4px black;
+}
+.newobjects-link{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    box-shadow: 2px 2px 2px black;
+}
+.newobjects_button_style{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+}
+.newobjects_button_style h1{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 28px;
+}
+.newobjects_button_style_img{
+    background-image: url("../img/plus.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70px 70px;
+}
+.list_data{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+@media screen and (max-width: 1440px) {
+    .newobjects{
+        width: 120px;
+        height: 120px;
+        margin: 2%;
+    }
+    .newobjects_button_style{
+        width: 120px;
+        height: 120px;
+    }
+    .newobjects_button_style_img{
+        background-size: 60px 60px;
+    }
+    .newobjects_button_style h1{
+        font-size: 20px;
+    }
+}
+@media screen and (max-width: 1024px) {
+.newobjects{
+    width: 100px;
+    height: 100px;
+    margin: 3%;
+}
+.newobjects_button_style{
+    width: 100px;
+    height: 100px;
+}
+    .newobjects_button_style_img{
+        background-size: 50px 50px;
+    }
+    .newobjects_button_style h1{
+        font-size: 18px;
+    }
+}
+@media screen and (max-width: 768px) {
+.newobjects{
+    width: 80px;
+    height: 80px;
+    margin: 4%;
+}
+.newobjects_button_style{
+    width: 80px;
+    height: 80px;
+}
+    .newobjects_button_style_img{
+        background-size: 40px 40px;
+    }
+    .newobjects_button_style h1{
+        font-size: 16px;
+    }
+}
+@media screen and (max-width: 425px) {
+.newobjects{
+    width: 50px;
+    height: 50px;
+    margin: 5%;
+}
+.newobjects_button_style{
+    width: 50px;
+    height: 50px;
+}
+    .newobjects_button_style_img{
+        background-size: 25px 25px;
+    }
+    .newobjects_button_style h1{
+        font-size: 14px;
+    }
+}
