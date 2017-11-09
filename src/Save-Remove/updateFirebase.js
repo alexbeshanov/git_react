@@ -1,24 +1,65 @@
 import {keepalldatabase} from "../Auth/firebaseConfig";
-import React from "react";
-import {SavePasswordFirebase} from "./savepasswordfirebase";
-import {SaveNotesFirebase} from "./savenotesfirebase";
-import {SaveCreditCardFirebase} from "./savecreditcardfirebase";
-import {SavePassportDataFirebase} from "./savepassportdatafirebase";
-import {userloginNOW} from "../Auth/userlogin";
+import {savePasswordFirebase} from "./savePasswordFirebase";
+import {saveNotesFirebase} from "./saveNotesFirebase";
+import {saveCreditCardFirebase} from "./saveCreditcardFirebase";
+import {savePassportDataFirebase} from "./savePassportdataFirebase";
 
-export function UpdatePasswordFirebase(valueNewUser, valueNewPassword, valueNewTitle, PrevTitle) {
-	keepalldatabase.ref("users/"+userloginNOW.username+"/password/"+PrevTitle).remove();
-	SavePasswordFirebase(valueNewUser, valueNewPassword, valueNewTitle);
+export function updatePasswordFirebase(valueNewUser,
+	valueNewPassword,
+	valueNewTitle,
+	prevTitle) {
+	keepalldatabase.ref("users/" + localStorage.getItem("USERNAME") + "/password/" + prevTitle).remove();
+	savePasswordFirebase(
+		valueNewUser,
+		valueNewPassword,
+		valueNewTitle);
 }
-export function UpdateNotesFirebase(valueNameTitle, valueTextArea, PrevTitle) {
-	keepalldatabase.ref("users/"+userloginNOW.username+"/notes/"+PrevTitle).remove();
-	SaveNotesFirebase(valueNameTitle, valueTextArea);
+
+export function updateNotesFirebase(valueNameTitle, valueTextArea, prevTitle) {
+	keepalldatabase.ref("users/" + localStorage.getItem("USERNAME") + "/notes/" + prevTitle).remove();
+	saveNotesFirebase(valueNameTitle, valueTextArea);
 }
-export function UpdateCreditCardFirebase(valueCardName, valueCardNumber,valueCardMonthEnd,valueCardYearEnd, valueCardCVS, valueCardPIN, PrevTitle) {
-	keepalldatabase.ref("users/"+userloginNOW.username+"/creditcard/"+PrevTitle).remove();
-	SaveCreditCardFirebase(valueCardName, valueCardNumber,valueCardMonthEnd,valueCardYearEnd, valueCardCVS, valueCardPIN);
+
+export function updateCreditCardFirebase(valueCardName,
+	valueCardNumber,
+	valueCardMonthEnd,
+	valueCardYearEnd,
+	valueCardCVS,
+	valueCardPIN,
+	prevTitle) {
+	keepalldatabase.ref("users/" + localStorage.getItem("USERNAME") + "/creditcard/" + prevTitle).remove();
+	saveCreditCardFirebase(
+		valueCardName,
+		valueCardNumber,
+		valueCardMonthEnd,
+		valueCardYearEnd,
+		valueCardCVS,
+		valueCardPIN);
 }
-export function UpdatePassportDataFirebase(valuePassportSurname, valuePassportName, valuePassportThirdName, valuePassportNumber, valuePassportSex, valuePassportDateofBirth, valuePassportPlaceofBirth, valuePassportPlaceInput, valuePassportDateInput, valuePassportIDInput, valuePassportRegistration, PrevTitle) {
-	keepalldatabase.ref("users/"+userloginNOW.username+"/passportData/"+PrevTitle).remove();
-	SavePassportDataFirebase(valuePassportSurname, valuePassportName, valuePassportThirdName, valuePassportNumber, valuePassportSex, valuePassportDateofBirth, valuePassportPlaceofBirth, valuePassportPlaceInput, valuePassportDateInput, valuePassportIDInput, valuePassportRegistration);
+
+export function updatePassportDataFirebase(valuePassportSurname,
+	valuePassportName,
+	valuePassportThirdName,
+	valuePassportNumber,
+	valuePassportSex,
+	valuePassportDateofBirth,
+	valuePassportPlaceofBirth,
+	valuePassportPlaceInput,
+	valuePassportDateInput,
+	valuePassportIDInput,
+	valuePassportRegistration,
+	prevTitle) {
+	keepalldatabase.ref("users/" + localStorage.getItem("USERNAME") + "/passportData/" + prevTitle).remove();
+	savePassportDataFirebase(
+		valuePassportSurname,
+		valuePassportName,
+		valuePassportThirdName,
+		valuePassportNumber,
+		valuePassportSex,
+		valuePassportDateofBirth,
+		valuePassportPlaceofBirth,
+		valuePassportPlaceInput,
+		valuePassportDateInput,
+		valuePassportIDInput,
+		valuePassportRegistration);
 }

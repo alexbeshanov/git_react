@@ -1,22 +1,22 @@
 import React from "react";
 import {keepalldatabase} from "../Auth/firebaseConfig";
 import "../style/NewObjects.css";
-import {OneNote} from "../NewObject_Module/OneNote";
-import NewObjectsNotes from "../NewObject_Module/NewObjects_notes";
+import {OneFile} from "../NewObject_Module/OneFile";
+import NewObjectsFiles from "../NewObject_Module/NewObjects_files";
 
-export class NotesDataList extends React.Component {
+export class FilesDataList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.history = props.history;
 		this.state = {
-			datalist: []
+			datalist: [],
 		};
 	}
 
 	componentDidMount() {
 		const db1 = keepalldatabase.ref().child("users");
 		const db2 = db1.child(localStorage.getItem("USERNAME"));
-		const db3 = db2.child("notes");
+		const db3 = db2.child("files");
 		db3.on("value", snap => {
 			this.setState({
 				datalist: ((typeof snap.val()) === "object") ? ((snap.val() === null || snap.val() === undefined) ? ([]) : Object.keys(snap.val())) : []
@@ -30,14 +30,14 @@ export class NotesDataList extends React.Component {
 				{
 					this.state.datalist.map((dataOne) => {
 						return (
-							<OneNote key={dataOne} keyData={dataOne}/>
+							<OneFile key={dataOne} keyData={dataOne} history={this.history}/>
 						);
 					})
 				}
-				<NewObjectsNotes history={this.history}/>
+				<NewObjectsFiles history={this.history}/>
 			</div>
 		);
 	}
 }
 
-export default NotesDataList;
+export default FilesDataList;

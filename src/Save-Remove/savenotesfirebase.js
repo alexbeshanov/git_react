@@ -1,18 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
 import {keepalldatabase} from "../Auth/firebaseConfig";
 import {ClassGost} from "../gost";
-import {key, userloginNOW} from "../Auth/userlogin";
+import {key_gost} from "../Auth/userlogin";
 
-export function SaveNotesFirebase(valueNameTitle, valueTextArea) {
-	var gost = new ClassGost();
-	var Nametitlegost=gost.Encode(valueNameTitle,key);
-	var TextAreagost=gost.Encode(valueTextArea, key);
-	keepalldatabase.ref("users/"+userloginNOW.username+"/notes/"+valueNameTitle).set({
-		NewName: "" + Nametitlegost,
-		NewText: "" + TextAreagost
-	});
+export function saveNotesFirebase(valueNameTitle, valueTextArea) {
+    var gost = new ClassGost();
+    var nameTitleGost = gost.Encode(valueNameTitle, key_gost);
+    var textAreaGost = gost.Encode(valueTextArea, key_gost);
+    keepalldatabase.ref("users/" + localStorage.getItem("USERNAME") + "/notes/" + valueNameTitle).set({
+        NewName: "" + nameTitleGost,
+        NewText: "" + textAreaGost
+    });
 }
-export default SaveNotesFirebase();
+
+export default saveNotesFirebase();
 
 

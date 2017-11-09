@@ -1,21 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
 import {keepalldatabase} from "../Auth/firebaseConfig";
 import {ClassGost} from "../gost";
-import {Userpass} from "../Auth/userlogin";
-import {key, userloginNOW} from "../Auth/userlogin";
+import {key_gost} from "../Auth/userlogin";
 
-export function SavePasswordFirebase(valueNewUser, valueNewPassword, valueNewTitle) {
+export function savePasswordFirebase(valueNewUser, valueNewPassword, valueNewTitle) {
     var gost = new ClassGost();
-    var NewUsergost=gost.Encode(valueNewUser,key);
-    var NewPasswordgost=gost.Encode(valueNewPassword, key);
-    var NewTitlegost=gost.Encode(valueNewTitle,key);
-	keepalldatabase.ref("users/"+userloginNOW.username+"/password/"+valueNewTitle).set({
-		NewUser: "" + NewUsergost,
-		NewPassword: "" + NewPasswordgost,
-		NewTitle: "" + NewTitlegost
-	});
+    var userGost = gost.Encode(valueNewUser, key_gost);
+    var passwordGost = gost.Encode(valueNewPassword, key_gost);
+    var titleGost = gost.Encode(valueNewTitle, key_gost);
+    keepalldatabase.ref("users/" + localStorage.getItem("USERNAME") + "/password/" + valueNewTitle).set({
+        NewUser: "" + userGost,
+        NewPassword: "" + passwordGost,
+        NewTitle: "" + titleGost
+    });
 }
-export default SavePasswordFirebase();
+
+export default savePasswordFirebase();
 
 

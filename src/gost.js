@@ -1,51 +1,51 @@
 /** Класс осуществляющий работу с шифром ГОСТ 28147-89 (шифрование/дешифрованние данных)
  * @see http://intsystem.org/19/gost-28147-89-php/ (thanks InSys)
  *
- * Переведено на язык javascript 
+ * Переведено на язык javascript
  * Craager (с) 2014
 
 
-Пример использования:
-<script src="GOST.js" type="text/javascript"></script>
+ Пример использования:
+ <script src="GOST.js" type="text/javascript"></script>
 
-<script>
-var gost = new ClassGost(),
-	data = "Inner text",
-	key = "lkmsdofijw9uri4oikpw934385u4owe2",
-	
-	key = md5($scope.userId.password)
-	data_encoded = gost.Encode(data, key),
-	data_decoded = gost.Decode(data_encoded, key);
-</script>
+ <script>
+ var gost = new ClassGost(),
+ data = "Inner text",
+ key = "lkmsdofijw9uri4oikpw934385u4owe2",
+
+ key = md5($scope.userId.password)
+ data_encoded = gost.Encode(data, key),
+ data_decoded = gost.Decode(data_encoded, key);
+ </script>
 
 
- * 
+ *
  */
 
 export function ClassGost() {
 	/** Количесто иттераций основного шага криптообразования
-	 */
+     */
 	var CNT_MAIN_STEP = 32;
 
 	/** Таблица замен
-	 *
-	 * @var array
-	 */
+     *
+     * @var array
+     */
 	var s_block = [
-		[6,12,7,1,5,15,13,8,4,10,9,14,0,3,11,2],
-		[14,11,4,12,6,13,15,10,2,3,8,1,0,7,5,9],
-		[13,11,4,1,3,15,5,9,0,10,14,7,6,8,2,12],
-		[7,13,10,1,0,8,9,15,14,4,6,12,11,2,5,3],
-		[1,15,13,0,5,7,10,4,9,2,3,14,6,11,8,12],
-		[4,10,9,2,13,8,0,14,6,11,1,12,7,15,5,3],
-		[4,11,10,0,7,2,1,13,3,6,8,5,9,12,15,14],
-		[5,8,1,13,10,3,4,2,14,15,12,7,6,0,9,11]
+		[6, 12, 7, 1, 5, 15, 13, 8, 4, 10, 9, 14, 0, 3, 11, 2],
+		[14, 11, 4, 12, 6, 13, 15, 10, 2, 3, 8, 1, 0, 7, 5, 9],
+		[13, 11, 4, 1, 3, 15, 5, 9, 0, 10, 14, 7, 6, 8, 2, 12],
+		[7, 13, 10, 1, 0, 8, 9, 15, 14, 4, 6, 12, 11, 2, 5, 3],
+		[1, 15, 13, 0, 5, 7, 10, 4, 9, 2, 3, 14, 6, 11, 8, 12],
+		[4, 10, 9, 2, 13, 8, 0, 14, 6, 11, 1, 12, 7, 15, 5, 3],
+		[4, 11, 10, 0, 7, 2, 1, 13, 3, 6, 8, 5, 9, 12, 15, 14],
+		[5, 8, 1, 13, 10, 3, 4, 2, 14, 15, 12, 7, 6, 0, 9, 11]
 	];
 
 	/** Ключ
-	 *
-	 * @var array
-	 */
+     *
+     * @var array
+     */
 	var k_block = [
 		0x00000000,
 		0x00000000,
@@ -59,32 +59,32 @@ export function ClassGost() {
 
 
 	/** Зашифровать данные
-	 *
-	 * @param string $data данные для шифрования
-	 * @param mixed $key ключ шифрования
-	 * @param array $table таблица замен
-	 * @return mixed возвращает зашифрованную строку, или false в случае неудачи
-	 */
-	this.Encode = function(data, key, table){
+     *
+     * @param string $data данные для шифрования
+     * @param mixed $key ключ шифрования
+     * @param array $table таблица замен
+     * @return mixed возвращает зашифрованную строку, или false в случае неудачи
+     */
+	this.Encode = function (data, key, table) {
 		// utf8 encode
 		data = unescape(encodeURIComponent(data));
-		if(key){
-			if(!this.SetKey(key)){
+		if (key) {
+			if (!this.SetKey(key)) {
 				return false;
 			}
 		}
 
-		if(table){
-			if(!this.SetTableReplace(table)){
+		if (table) {
+			if (!this.SetTableReplace(table)) {
 				return false;
 			}
 		}
 
 		var blocks = this.LoadData2Blocks(data),
 			keys = this.LoadKeysArray(CNT_MAIN_STEP),
-			result="";
+			result = "";
 
-		for(var k in blocks){
+		for (var k in blocks) {
 			result += this.Global_MainStep(blocks[k], keys);
 		}
 
@@ -92,30 +92,30 @@ export function ClassGost() {
 	};
 
 	/** Расшифровать данные
-	 *
-	 * @param string $data зашифрованные данные
-	 * @param mixed $key ключ шифрования
-	 * @param array $table таблица замен
-	 * @return mixed возвращает исходные данные, или false в случае неудачи
-	 */
-	this.Decode = function(data, key, table){
-		if(key){
-			if(!this.SetKey(key)){
+     *
+     * @param string $data зашифрованные данные
+     * @param mixed $key ключ шифрования
+     * @param array $table таблица замен
+     * @return mixed возвращает исходные данные, или false в случае неудачи
+     */
+	this.Decode = function (data, key, table) {
+		if (key) {
+			if (!this.SetKey(key)) {
 				return false;
 			}
 		}
 
-		if(table){
-			if(!this.SetTableReplace(table)){
+		if (table) {
+			if (!this.SetTableReplace(table)) {
 				return false;
 			}
 		}
 
 		var blocks = this.LoadData2Blocks(data),
 			keys = this.LoadKeysArray(CNT_MAIN_STEP).reverse(),
-			result="";
+			result = "";
 
-		for(var k in blocks){
+		for (var k in blocks) {
 			result += this.Global_MainStep(blocks[k], keys);
 		}
 
@@ -125,24 +125,24 @@ export function ClassGost() {
 	};
 
 	/** Установить ключ шифрования<br><br>
-	 * Возможно указать ключ в двух форматах:<br>
-	 *  - Строка длинной в 32 байта<br>
-	 *  - Массив из 8 элементов, где каждый элемент - 4 байтовое число integer<br><br>
-	 * При этом любое отклонение от данных форматов будет вызывать ошибку
-	 *
-	 * @param mixed $key ключ шифрования
-	 * @return boolen возвращает true если удалось установить ключ шифрования, false - если произошла ошибка
-	 */
-	this.SetKey = function(key){
-		if(typeof key == "string"){
-			if(key.length !== 32){
+     * Возможно указать ключ в двух форматах:<br>
+     *  - Строка длинной в 32 байта<br>
+     *  - Массив из 8 элементов, где каждый элемент - 4 байтовое число integer<br><br>
+     * При этом любое отклонение от данных форматов будет вызывать ошибку
+     *
+     * @param mixed $key ключ шифрования
+     * @return boolen возвращает true если удалось установить ключ шифрования, false - если произошла ошибка
+     */
+	this.SetKey = function (key) {
+		if (typeof key === "string") {
+			if (key.length !== 32) {
 				console.error("SetKey(): \"key\" length must be equal to 256 bits (32 bytes)");
 				return false;
 			}
 
 			var new_key = [];
 
-			for(var i = 0; i < 32; i += 4){
+			for (var i = 0; i < 32; i += 4) {
 				//$tmp=(int)hexdec(bin2hex(substr($key, ($i*4), 4)));
 
 				var tmp = parseInt(bin2hex(key.substr(i, 4)), 16);
@@ -152,19 +152,19 @@ export function ClassGost() {
 
 			k_block = new_key;
 			return true;
-		} else if (Array.isArray(key)){
-			if(key.length != 8){
+		} else if (Array.isArray(key)) {
+			if (key.length !== 8) {
 				console.error("SetKey(): count of elements in the array \"key\" must be equal to 8");
 				return false;
 			}
-			
+
 			new_key = [];
 
-			for(var k in key){
+			for (var k in key) {
 				var val = key[k];
 
-				if(val % 1 != 0){
-					console.error("SetKey(): every element of the array \"key\" must be integer. The array element \"table["+k+"]\" is not an integer.");
+				if (val % 1 !== 0) {
+					console.error("SetKey(): every element of the array \"key\" must be integer. The array element \"table[" + k + "]\" is not an integer.");
 					return false;
 				}
 
@@ -180,66 +180,66 @@ export function ClassGost() {
 	};
 
 	/** Установить таблицу замен.<br>
-	 * Формат таблицы замен - матрица размерностью 8x16,
-	 * каждый ее элемент больше либо равен 0 и меньше либо равен 15,
-	 * при этом в каждой строке не должно быть повторяющихся значений.<br><br>
-	 * Также обратите внимание что неправильный выбор таблицы замен, может
-	 * привести к снижению стойкости шифра.
-	 *
-	 * @example
-	 * Пример таблицы:<br>
-	 * array(6 ,12,7 ,1 ,5 ,15,13,8 ,4 ,10,9 ,14,0 ,3 ,11,2 ),<br>
-	 * array(14,11,4 ,12,6 ,13,15,10,2 ,3 ,8 ,1 ,0 ,7 ,5 ,9 ),<br>
-	 * array(13,11,4 ,1 ,3 ,15,5 ,9 ,0 ,10,14,7 ,6 ,8 ,2 ,12),<br>
-	 * array(7 ,13,10,1 ,0 ,8 ,9 ,15,14,4 ,6 ,12,11,2 ,5 ,3 ),<br>
-	 * array(1 ,15,13,0 ,5 ,7 ,10,4 ,9 ,2 ,3 ,14,6 ,11,8 ,12),<br>
-	 * array(4 ,10,9 ,2 ,13,8 ,0 ,14,6 ,11,1 ,12,7 ,15,5 ,3 ),<br>
-	 * array(4 ,11,10,0 ,7 ,2 ,1 ,13,3 ,6 ,8 ,5 ,9 ,12,15,14),<br>
-	 * array(5 ,8 ,1 ,13,10,3 ,4 ,2 ,14,15,12,7 ,6 ,0 ,9 ,11),<br>
-	 *
-	 * @param array $table таблица замен
-	 * @return boolean возвращает true если удалось установить таблицу замен, false- если произошла ошибка
-	 */
-	this.SetTableReplace = function(table){
-		if(!Array.isArray(table)){
+     * Формат таблицы замен - матрица размерностью 8x16,
+     * каждый ее элемент больше либо равен 0 и меньше либо равен 15,
+     * при этом в каждой строке не должно быть повторяющихся значений.<br><br>
+     * Также обратите внимание что неправильный выбор таблицы замен, может
+     * привести к снижению стойкости шифра.
+     *
+     * @example
+     * Пример таблицы:<br>
+     * array(6 ,12,7 ,1 ,5 ,15,13,8 ,4 ,10,9 ,14,0 ,3 ,11,2 ),<br>
+     * array(14,11,4 ,12,6 ,13,15,10,2 ,3 ,8 ,1 ,0 ,7 ,5 ,9 ),<br>
+     * array(13,11,4 ,1 ,3 ,15,5 ,9 ,0 ,10,14,7 ,6 ,8 ,2 ,12),<br>
+     * array(7 ,13,10,1 ,0 ,8 ,9 ,15,14,4 ,6 ,12,11,2 ,5 ,3 ),<br>
+     * array(1 ,15,13,0 ,5 ,7 ,10,4 ,9 ,2 ,3 ,14,6 ,11,8 ,12),<br>
+     * array(4 ,10,9 ,2 ,13,8 ,0 ,14,6 ,11,1 ,12,7 ,15,5 ,3 ),<br>
+     * array(4 ,11,10,0 ,7 ,2 ,1 ,13,3 ,6 ,8 ,5 ,9 ,12,15,14),<br>
+     * array(5 ,8 ,1 ,13,10,3 ,4 ,2 ,14,15,12,7 ,6 ,0 ,9 ,11),<br>
+     *
+     * @param array $table таблица замен
+     * @return boolean возвращает true если удалось установить таблицу замен, false- если произошла ошибка
+     */
+	this.SetTableReplace = function (table) {
+		if (!Array.isArray(table)) {
 			console.error("SetTableReplace(): \"table\" must be array");
 			return false;
 		}
 
-		if(table.length != 8){
+		if (table.length !== 8) {
 			console.error("SetTableReplace(): count of elements in the array \"$table\" must be equal to 8");
 			return false;
 		}
 
 		var i = 0,
 			new_array = [];
-		
-		for(var k in table){
+
+		for (var k in table) {
 			var val = table[k];
 
-			if(!Array.isArray(val)){
-				console.error("SetTableReplace(): table["+k+"] must be array");
+			if (!Array.isArray(val)) {
+				console.error("SetTableReplace(): table[" + k + "] must be array");
 				return false;
 			}
 
-			if(val.length != 16){
-				console.error("SetTableReplace(): count of elements in the array \"$table["+k+"]\" must be equal to 16");
+			if (val.length !== 16) {
+				console.error("SetTableReplace(): count of elements in the array \"$table[" + k + "]\" must be equal to 16");
 				return false;
 			}
 
 
 			var new_val = [];
 
-			for(var int_key in val){
+			for (var int_key in val) {
 				var int_val = val[int_key];
 
-				if(int_val % 1 != 0){
-					console.error("SetTableReplace(): every element of the array \"$table["+k+"]\" must be integer. The array element \"$table["+k+"]["+int_key+"]\" is not an integer.");
+				if (int_val % 1 !== 0) {
+					console.error("SetTableReplace(): every element of the array \"$table[" + k + "]\" must be integer. The array element \"$table[" + k + "][" + int_key + "]\" is not an integer.");
 					return false;
 				}
 
-				if(int_val > 15 || int_val < 0){
-					console.error("SetTableReplace(): every element of the array \"$table["+k+"]\" must be greater than or equal to 0 and less than or equal to 15. The array element \"$table["+k+"]["+int_key+"]\" is not in this range.");
+				if (int_val > 15 || int_val < 0) {
+					console.error("SetTableReplace(): every element of the array \"$table[" + k + "]\" must be greater than or equal to 0 and less than or equal to 15. The array element \"$table[" + k + "][" + int_key + "]\" is not in this range.");
 					return false;
 				}
 				new_val.push(int_val);
@@ -255,23 +255,23 @@ export function ClassGost() {
 	};
 
 	/** Основной шаг шифрообразования
-	 *
-	 * @param string $block шифруемый блок
-	 * @param array $keys подготовленный массив с ключами
-	 * @param intger $cnt_repeat [опционально] количество преобразований
-	 * @return string
-	 */
-	this.Global_MainStep = function(block, keys){
+     *
+     * @param string $block шифруемый блок
+     * @param array $keys подготовленный массив с ключами
+     * @param intger $cnt_repeat [опционально] количество преобразований
+     * @return string
+     */
+	this.Global_MainStep = function (block, keys) {
 		var cnt_repeat = CNT_MAIN_STEP,
 			blockExp = this.Global_BlockExplode(block),
 			n1 = blockExp.left,
 			n2 = blockExp.right;
 
-		if(keys.length < cnt_repeat){
+		if (keys.length < cnt_repeat) {
 			cnt_repeat = keys.length;
 		}
 
-		for(var i = 0; i < cnt_repeat; i++){
+		for (var i = 0; i < cnt_repeat; i++) {
 			var val = this.Global_SummMod32(n1, keys[i]);
 
 			val = this.Global_BlockReplace(val);
@@ -290,77 +290,77 @@ export function ClassGost() {
 	};
 
 	/** Функция цикличного побитового сдвига вправо
-	 *
-	 * @param integer $block
-	 * @param integer $bits количество битов для сдвига
-	 * @return integer
-	 */
-	this.Global_BlockCycleShift = function(block, bits){
-		if(bits > 0){
+     *
+     * @param integer $block
+     * @param integer $bits количество битов для сдвига
+     * @return integer
+     */
+	this.Global_BlockCycleShift = function (block, bits) {
+		if (bits > 0) {
 			var a = bits,
 				b = 32 - a;
-			
-			block = ((block >> a) & ~(-Math.pow(2,b)))^(block << b);
+
+			block = ((block >> a) & ~(-Math.pow(2, b))) ^ (block << b);
 		}
 		return block;
 	};
 
 	/** Замена по таблице замен
-	 *
-	 * @param integer $block текущий блок для замены
-	 * @return integer
-	 */
-	this.Global_BlockReplace = function(block){
+     *
+     * @param integer $block текущий блок для замены
+     * @return integer
+     */
+	this.Global_BlockReplace = function (block) {
 		var new_block = 0;
 
-		for(var i = 0; i < 8; i++){
+		for (var i = 0; i < 8; i++) {
 			//Вычленяем нужные 4 бита под замену
-			var rem = block>>(4*(i+1)),
+			var rem = block >> (4 * (i + 1)),
 				hex;
-			rem = rem<<(4*(i+1));
+			rem = rem << (4 * (i + 1));
 
-			if(i == 7){
+			if (i === 7) {
 				hex = rem;
-			}else{
+			} else {
 				hex = block - rem;
 				block = rem;
 			}
 
-			hex = this.Global_BlockCycleShift(hex,(4*i));
+			hex = this.Global_BlockCycleShift(hex, (4 * i));
 
 			//Находим на какое число его заменять по таблице замен
 			var replace = s_block[i][hex];
 
 			//Заменяем
-			new_block = new_block + (Math.pow(16, i)*replace);
+			new_block = new_block + (Math.pow(16, i) * replace);
 		}
 
 		return new_block;
 	};
 
 	/** Суммирование двух чисел по модулю 32
-	 *
-	 * @param integer $bin1 число (4 байта)
-	 * @param integer $bin2 число (4 байта)
-	 * @return integer результат вычисления (4 байта)
-	 */
-	this.Global_SummMod32 = function(bin1, bin2){
+     *
+     * @param integer $bin1 число (4 байта)
+     * @param integer $bin2 число (4 байта)
+     * @return integer результат вычисления (4 байта)
+     */
+	this.Global_SummMod32 = function (bin1, bin2) {
 		return this.NormalizeInteger32(parseInt(bin1 + bin2));
 	};
 
 	/** Разбиение блока на "правую" и "левую" часть
-	 *
-	 * @param string $block входной блок (8 байт)
-	 * @param &integer $left левая часть (накопитель N1) (4 байта)
-	 * @param &integer $right правая часть (накопитель N2) (4 байта)
-	 */
-	this.Global_BlockExplode = function(block){
+     *
+     * @param string $block входной блок (8 байт)
+     * @param &integer $left левая часть (накопитель N1) (4 байта)
+     * @param &integer $right правая часть (накопитель N2) (4 байта)
+     */
+	this.Global_BlockExplode = function (block) {
 		var left = "",
 			right = "";
 
 		left = block.substr(0, 4);
 		right = block.substr(4, 4);
-		
+
 
 		return {
 			left: parseInt(bin2hex(left), 16),
@@ -369,26 +369,26 @@ export function ClassGost() {
 	};
 
 	/** Разбиение блока на "правую" и "левую" часть
-	 *
-	 * @param &string $block входной блок (8 байт)
-	 * @param integer $left левая часть (накопитель N1) (4 байта)
-	 * @param integer $right правая часть (накопитель N2) (4 байта)
-	 */
-	this.Global_BlockImplode = function(left, right){
+     *
+     * @param &string $block входной блок (8 байт)
+     * @param integer $left левая часть (накопитель N1) (4 байта)
+     * @param integer $right правая часть (накопитель N2) (4 байта)
+     */
+	this.Global_BlockImplode = function (left, right) {
 		var block = "";
 
 		left = sprintf("%08x", left);
 		right = sprintf("%08x", right);
 
 		var arr = left.match(RegExp("((.{2})+?|(.{1,2})$)", "g"));
-		
-		for(var k in arr){
+
+		for (var k in arr) {
 			block += String.fromCharCode(parseInt(arr[k], 16));
 		}
 
 
 		arr = right.match(RegExp("((.{2})+?|(.{1,2})$)", "g"));
-		for(var l in arr){
+		for (var l in arr) {
 			block += String.fromCharCode(parseInt(arr[l], 16));
 		}
 
@@ -396,24 +396,24 @@ export function ClassGost() {
 	};
 
 	/** Генерируем массив с ключами
-	 *
-	 * @param integer $cnt_repeat количество ключей
-	 * @return array
-	 */
-	this.LoadKeysArray = function(cnt_repeat){
-		if(!cnt_repeat) {
+     *
+     * @param integer $cnt_repeat количество ключей
+     * @return array
+     */
+	this.LoadKeysArray = function (cnt_repeat) {
+		if (!cnt_repeat) {
 			cnt_repeat = CNT_MAIN_STEP;
 		}
 
 		var key_block = [];
-		for(var i = 0; i < cnt_repeat; i++){
+		for (var i = 0; i < cnt_repeat; i++) {
 			var x;
-			if(i < (cnt_repeat - 8)){
+			if (i < (cnt_repeat - 8)) {
 				x = i % 8;
-			}else{
+			} else {
 				x = 7 - (i % 8);
 			}
-			
+
 			key_block.push(k_block[x]);
 		}
 
@@ -421,57 +421,58 @@ export function ClassGost() {
 	};
 
 	/** Разбиваем данные на блоки по 64 бита (8 байт)
-	 *
-	 * @param string $data входные данные
-	 * @param integer $block_size [опционально] (64 - дефолт) размерность блоков
-	 * @return array выходной массив с блоками
-	 */
-	this.LoadData2Blocks = function(data){
+     *
+     * @param string $data входные данные
+     * @param integer $block_size [опционально] (64 - дефолт) размерность блоков
+     * @return array выходной массив с блоками
+     */
+	this.LoadData2Blocks = function (data) {
 		var block_size = 64,
 			blocks = [],
 			block_len = parseInt(block_size / 8);
-		for(var i = 0, x = (Math.ceil(data.length/block_len)); i < x; i++){
-			blocks[i] = data.substr(i * block_len, block_len);
+		if (data !== null) {
+			for (var i = 0, x = (Math.ceil(data.length / block_len)); i < x; i++) {
+				blocks[i] = data.substr(i * block_len, block_len);
 
-			if(i == (x - 1)){
-				//Если последний блок не полон, то дополняем его нулями
-				while (blocks[i].length < block_len){
-					blocks[i] += String.fromCharCode(0);
+				if (i === (x - 1)) {
+					//Если последний блок не полон, то дополняем его нулями
+					while (blocks[i].length < block_len) {
+						blocks[i] += String.fromCharCode(0);
+					}
 				}
 			}
 		}
-
 		return blocks;
 	};
 
 	/** Преведение 64битного integer к "32битному" на 64битных системах
-	 *
-	 * @param integer $number
-	 */
-	this.NormalizeInteger32 = function(number){
+     *
+     * @param integer $number
+     */
+	this.NormalizeInteger32 = function (number) {
 		var is_64bit = null;
 
 		number = parseInt(number);
 
-		if(is_64bit === null){
-			if(parseInt(2147483647+1) > 0){
+		if (is_64bit === null) {
+			if (parseInt(2147483647 + 1) > 0) {
 				is_64bit = true;
 			} else {
-				is_64bit=false;
+				is_64bit = false;
 			}
 		}
 
-		if(is_64bit){
+		if (is_64bit) {
 			var integer = null;
 
-			if(integer === null){
+			if (integer === null) {
 				integer = 0;
 
 				//Генерируем число у которого в двоичном представлении младшие 32 бита - единицы, остальные - нули
 				//
 				//В 32-битных системах это число "-1"
 				//В 64-битных - "4294967295"
-				for(var i = 0; i < 32; i++){
+				for (var i = 0; i < 32; i++) {
 					integer = integer | (1 << i);
 				}
 			}
@@ -532,13 +533,13 @@ function sprintf() {
 	//   example 5: sprintf('%-03s', 'E');
 	//   returns 5: 'E00'
 
-	var regex = /%%|%(\d+\$)?([-+\'#0 ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g;
+	var regex = /%%|%(\d+\$)?([-+'#0 ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g;
 	var a = arguments;
 	var i = 0;
 	var format = a[i++];
 
 	// pad()
-	var pad = function(str, len, chr, leftJustify) {
+	var pad = function (str, len, chr, leftJustify) {
 		if (!chr) {
 			chr = " ";
 		}
@@ -548,7 +549,7 @@ function sprintf() {
 	};
 
 	// justify()
-	var justify = function(value, prefix, leftJustify, minWidth, zeroPad, customPadChar) {
+	var justify = function (value, prefix, leftJustify, minWidth, zeroPad, customPadChar) {
 		var diff = minWidth - value.length;
 		if (diff > 0) {
 			if (leftJustify || !zeroPad) {
@@ -561,7 +562,7 @@ function sprintf() {
 	};
 
 	// formatBaseX()
-	var formatBaseX = function(value, base, prefix, leftJustify, minWidth, precision, zeroPad) {
+	var formatBaseX = function (value, base, prefix, leftJustify, minWidth, precision, zeroPad) {
 		// Note: casts negative numbers to positive ones
 		var number = value >>> 0;
 		prefix = prefix && number && {
@@ -574,7 +575,7 @@ function sprintf() {
 	};
 
 	// formatString()
-	var formatString = function(value, leftJustify, minWidth, precision, zeroPad, customPadChar) {
+	var formatString = function (value, leftJustify, minWidth, precision, zeroPad, customPadChar) {
 		if (precision != null) {
 			value = value.slice(0, precision);
 		}
@@ -582,7 +583,7 @@ function sprintf() {
 	};
 
 	// doFormat()
-	var doFormat = function(substring, valueIndex, flags, minWidth, _, precision, type) {
+	var doFormat = function (substring, valueIndex, flags, minWidth, _, precision, type) {
 		var number, prefix, method, textTransform, value;
 
 		if (substring === "%%") {
@@ -626,7 +627,7 @@ function sprintf() {
 			minWidth = 0;
 		} else if (minWidth === "*") {
 			minWidth = +a[i++];
-		} else if (minWidth.charAt(0) == "*") {
+		} else if (minWidth.charAt(0) === "*") {
 			minWidth = +a[minWidth.slice(1, -1)];
 		} else {
 			minWidth = +minWidth;
@@ -646,7 +647,7 @@ function sprintf() {
 			precision = "fFeE".indexOf(type) > -1 ? 6 : (type === "d") ? 0 : undefined;
 		} else if (precision === "*") {
 			precision = +a[i++];
-		} else if (precision.charAt(0) == "*") {
+		} else if (precision.charAt(0) === "*") {
 			precision = +a[precision.slice(1, -1)];
 		} else {
 			precision = +precision;

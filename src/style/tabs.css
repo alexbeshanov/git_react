@@ -1,11 +1,12 @@
-.tabs{
+.tabs {
     display: flex;
     width: 100%;
     height: 100%;
     justify-content: flex-start;
     align-items: flex-start;
 }
-.tabs ul{
+
+.tabs ul {
     flex-direction: column;
     width: 30%;
     height: 20%;
@@ -15,7 +16,8 @@
     margin: 0px;
 
 }
-.tabs_li{
+
+.tabs_li {
     display: flex;
     width: 100%;
     height: 100%;
@@ -23,7 +25,8 @@
     align-items: center;
     border-right: solid 1px white;
 }
-.tabs_Link{
+
+.tabs_Link {
     display: flex;
     width: 100%;
     height: 100%;
@@ -32,16 +35,19 @@
     transition: 0.5s;
     text-decoration: none;
 }
-.tabs_Link:hover{
+
+.tabs_Link:hover {
     background-color: #B8C0CC;
     transition: 0.5s;
 
 }
-.tabs_Link:hover .tabs_div{
+
+.tabs_Link:hover .tabs_div {
     transition: 0.5s;
     color: #282536;
 }
-.tabs_div{
+
+.tabs_div {
     display: flex;
     width: 100%;
     height: 20%;
@@ -58,23 +64,27 @@
     transition: 0.5s;
     color: white;
 }
+
 @media screen and (max-width: 1440px) {
-    .tabs_div{
+    .tabs_div {
         font-size: 13pt;
     }
 }
+
 @media screen and (max-width: 1024px) {
-    .tabs_div{
+    .tabs_div {
         font-size: 12pt;
     }
 }
+
 @media screen and (max-width: 768px) {
-    .tabs_div{
+    .tabs_div {
         font-size: 11pt;
     }
 }
+
 @media screen and (max-width: 425px) {
-    .tabs_div{
+    .tabs_div {
         font-size: 10pt;
     }
 }

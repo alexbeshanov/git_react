@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./App.css";
 import FirstPage from "./Navigation/firstpage.js";
 import SecondPage from "./Navigation/secondpage.js";
@@ -7,7 +6,7 @@ import ThirdPage from "./Navigation/thirdpage.js";
 import Login from "./Auth/login.js";
 import Registration from "./Auth/registration";
 import {
-	BrowserRouter as Router, Route, Link, Switch, Redirect
+	BrowserRouter as Router, Route, Switch
 } from "react-router-dom";
 
 const App = () =>(

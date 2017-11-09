@@ -1,20 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import {
-	BrowserRouter as Router, Route, Link, Switch, Redirect
-} from "react-router-dom";
-import "../Save-Remove/savepasswordfirebase.js";
-import "../Auth/userlogin.js";
-import NewObjects from "../NewObject_Module/NewObjects_password.js";
+import "../Save-Remove/savePasswordFirebase";
+import "../Auth/userlogin";
 import "../style/list.css";
+import FilesDataList from "../List/FilesList_Data";
 
-export const Files=(props)=>(
+export const Files = (props) => (
 	<div className="listbox">
 		<h2>Список сохраненных файлов</h2>
 		<div className="listbox-size">
-			<NewObjects history={props.history}/>
+			<FilesDataList history={props.history}/>
 		</div>
-		<button className="listbox_button"><div className=""><p>Удалить все файлы</p></div></button>
 	</div>
 );
 export default Files;

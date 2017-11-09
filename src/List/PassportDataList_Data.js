@@ -1,43 +1,39 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import {
-	BrowserRouter as Router, Route, Link, Redirect
-} from "react-router-dom";
 import {keepalldatabase} from "../Auth/firebaseConfig";
 import "../style/NewObjects.css";
-import DataOnePST from "../NewObject_Module/DataOnePST";
-import NewObjects_passportData from "../NewObject_Module/NewObjects_passportData.js";
-import {userloginNOW} from "../Auth/userlogin";
+import {OnePassportData} from "../NewObject_Module/OnePassportData";
+import NewObjectsPassportData from "../NewObject_Module/NewObjects_passportData";
 
-export class PassportDataList extends React.Component{
+export class PassportDataList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.history=props.history;
+		this.history = props.history;
 		this.state = {
 			datalist: []
 		};
 	}
 
-	componentDidMount(){
-		const fr = keepalldatabase.ref().child("users");
-		const fruser=fr.child(userloginNOW.username);
-		const passkeepalldatabase=fruser.child("passportData");
-		passkeepalldatabase.on("value", snap => {
+	componentDidMount() {
+		const db1 = keepalldatabase.ref().child("users");
+		const db2 = db1.child(localStorage.getItem("USERNAME"));
+		const db3 = db2.child("passportData");
+		db3.on("value", snap => {
 			this.setState({
-				datalist: ((typeof snap.val()) === "object")? ((snap.val()=== null || snap.val()===undefined)? ([]):Object.keys(snap.val())) :[]
+				datalist: ((typeof snap.val()) === "object") ? ((snap.val() === null || snap.val() === undefined) ? ([]) : Object.keys(snap.val())) : []
 			});
 		});
 	}
 
-	render(){
+	render() {
 		return (
 			<div className="list_data">
-				{this.state.datalist.map((dataOne)=>{
-					return(
-						<DataOnePST keyData={dataOne}/>
-					);
-				})}
-				<NewObjects_passportData history={this.history}/>
+				{
+					this.state.datalist.map((dataOne) => {
+						return (
+							<OnePassportData key={dataOne} keyData={dataOne}/>
+						);
+					})}
+				<NewObjectsPassportData history={this.history}/>
 			</div>
 		);
 	}
