@@ -11,7 +11,6 @@ export const FirstPage = (props) => (
 				className="main-page_footer_logo_link"
 				history={props.history}>
 				<div className="main-page_footer_logo">
-					<h1>KEEPALL</h1>
 				</div>
 			</Link>
 
