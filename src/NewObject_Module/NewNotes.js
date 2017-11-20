@@ -15,8 +15,8 @@ export class NewNotes extends React.Component {
             value: "",
             valueNameTitle: "",
             valueTextArea: "",
-            checkButtonFlag1: true,
-            checkButtonFlag2: true,
+            checkButtonFlag1: false,
+            checkButtonFlag2: false,
             prevTitle: "",
             linkData: "",
             saveTag: this.props.location.state.saveTag
@@ -24,28 +24,36 @@ export class NewNotes extends React.Component {
     };
 
     checkNameTitle = (event) => {
+        event.target.value = event.target.value.replace(/[^A-Za-zА-Яа-яЁё\s\w\d]/g, '');
         this.setState({valueNameTitle: event.target.value});
-        (event.target.value.length === 0) ? this.setState({checkButtonFlag1: true}) : this.setState({checkButtonFlag1: false});
+        (event.target.value.length < 2) ? this.setState({checkButtonFlag1: false}) : this.setState({checkButtonFlag1: true});
     };
     checkTextArea = (event) => {
         this.setState({valueTextArea: event.target.value});
-        (event.target.value.length === 0) ? this.setState({checkButtonFlag2: true}) : this.setState({checkButtonFlag2: false});
+        (event.target.value.length === 0) ? this.setState({checkButtonFlag2: false}) : this.setState({checkButtonFlag2: true});
     };
     saveNotes = (event) => {
         event.preventDefault();
         if (this.state.saveTag === true) {
-            updateNotesFirebase(
-                this.state.valueNameTitle,
-                this.state.valueTextArea,
-                this.state.prevTitle
-            );
+            if((this.state.valueNameTitle !== "")&&(this.state.valueTextArea !== "")){
+                updateNotesFirebase(
+                    this.state.valueNameTitle,
+                    this.state.valueTextArea,
+                    this.state.prevTitle
+                );
+                this.props.history.push('/firstpage/notes/');
+            }
+            else alert("Поля не могут быть пустыми!");
         } else {
-            saveNotesFirebase(
-                this.state.valueNameTitle,
-                this.state.valueTextArea
-            );
+            if ((this.state.checkButtonFlag1 === true) && (this.state.checkButtonFlag2 === true)) {
+                saveNotesFirebase(
+                    this.state.valueNameTitle,
+                    this.state.valueTextArea
+                );
+                this.props.history.push('/firstpage/notes/')
+            }
+            else alert("Заполните все поля!");
         }
-        this.props.history.push('/firstpage/notes/');
     };
     deleteOne = (event) => {
         event.preventDefault();
@@ -72,7 +80,7 @@ export class NewNotes extends React.Component {
             const newPassword = db4.child("NewText");
             newPassword.on("value", snap => {
                 this.setState({
-                    valueTextArea: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valueTextArea: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s~`!@#$%^&*()_+-={}:";'<>?]/g, '')
                 })
             });
         }
@@ -90,6 +98,7 @@ export class NewNotes extends React.Component {
                                    name="nametitle"
                                    className="form-autentification__input form-autentification-style"
                                    type="text"
+                                   maxLength="120"
                                    autoComplete="off"
                                    placeholder="Название заметки"
                                    onInput={this.checkNameTitle}
@@ -104,8 +113,7 @@ export class NewNotes extends React.Component {
                                       onChange={this.checkTextArea}/>
                             <button type="submit"
                                     value="Submit"
-                                    disabled={(this.state.checkButtonFlag1 && this.state.checkButtonFlag2)}
-                                    className={(((!this.state.checkButtonFlag1) && (!this.state.checkButtonFlag2)) || (this.state.saveTag)) ? "form-autentification form-autentification-style form-button__modificate" : "form-autentification form-autentification-style"}>
+                                    className={(((this.state.checkButtonFlag1) && (this.state.checkButtonFlag2)) || (this.state.saveTag)) ? "form-autentification form-autentification-style form-button__modificate" : "form-autentification form-autentification-style"}>
                                 <p>Сохранить</p></button>
                             <button type="submit"
                                     disabled={!(this.state.saveTag)}

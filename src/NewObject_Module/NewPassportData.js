@@ -24,17 +24,17 @@ export class NewPassportData extends React.Component {
             valuePassportDateInput: "",
             valuePassportIDInput: "",
             valuePassportRegistration: "",
-            ch1: true,
-            ch2: true,
-            ch3: true,
-            ch4: true,
-            ch5: true,
-            ch6: true,
-            ch7: true,
-            ch8: true,
-            ch9: true,
-            ch10: true,
-            ch11: true,
+            ch1: false,
+            ch2: false,
+            ch3: false,
+            ch4: false,
+            ch5: false,
+            ch6: false,
+            ch7: false,
+            ch8: false,
+            ch9: false,
+            ch10: false,
+            ch11: false,
             prevTitle: "",
             linkData: "",
             saveTag: this.props.location.state.saveTag
@@ -42,82 +42,111 @@ export class NewPassportData extends React.Component {
     }
 
     checkPassportName = (event) => {
-        this.setState({valuePassportName: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch1: true}) : this.setState({ch1: false});
+        this.setState({valuePassportName: event.target.value.replace(/[^A-Za-zА-Яа-яЁё\s\-]/, '')});
+        (event.target.value.length < 2) ? this.setState({ch1: false}) : this.setState({ch1: true});
     };
     checkPassportSurname = (event) => {
-        this.setState({valuePassportSurname: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch2: true}) : this.setState({ch2: false});
+        this.setState({valuePassportSurname: event.target.value.replace(/[^A-Za-zА-Яа-яЁё\s\-]/, '')});
+        (event.target.value.length < 2) ? this.setState({ch2: false}) : this.setState({ch2: true});
     };
     checkPassportThirdName = (event) => {
-        this.setState({valuePassportThirdName: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch3: true}) : this.setState({ch3: false});
+        this.setState({valuePassportThirdName: event.target.value.replace(/[^A-Za-zА-Яа-яЁё\s\-]/, '')});
+        this.setState({ch3: true})
     };
     checkPassportSex = (event) => {
         this.setState({valuePassportSex: event.target.value});
-        (event.target.value.length === 0) ? this.setState(() => ({ch4: true})) : this.setState(() => ({ch4: false}));
+        (event.target.value.length === 0) ? this.setState({ch4: false}) : this.setState({ch4: true});
     };
     checkPassportDateofBirth = (event) => {
         this.setState({valuePassportDateofBirth: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch5: true}) : this.setState({ch5: false});
+        (event.target.value.length === 0) ? this.setState({ch5: false}) : this.setState({ch5: true});
     };
     checkPassportPlaceofBirth = (event) => {
-        this.setState({valuePassportPlaceofBirth: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch6: true}) : this.setState({ch6: false});
+        this.setState({valuePassportPlaceofBirth: event.target.value.replace(/[^A-Za-zА-Яа-яЁё\s\w\d~`!@#$%^&*()_+-={}:";'<>?]/g, '')});
+        (event.target.value.length === 0) ? this.setState({ch6: false}) : this.setState({ch6: true});
     };
     checkPassportNumber = (event) => {
-        this.setState({valuePassportNumber: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch7: true}) : this.setState({ch7: false});
+        this.setState({valuePassportNumber: event.target.value.replace(/[^\d]/g, '')});
+        (event.target.value.length < 10) ? this.setState({ch7: false}) : this.setState({ch7: true});
     };
     checkPassportPlaceInput = (event) => {
-        this.setState({valuePassportPlaceInput: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch8: true}) : this.setState({ch8: false});
+        this.setState({valuePassportPlaceInput: event.target.value.replace(/[^A-Za-zА-Яа-яЁё\s\w\d~`!@#$%^&*()_+-={}:";'<>?]/g, '')});
+        (event.target.value.length === 0) ? this.setState({ch8: false}) : this.setState({ch8: true});
     };
     checkPassportDateInput = (event) => {
         this.setState({valuePassportDateInput: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch9: true}) : this.setState({ch9: false});
+        (event.target.value.length === 0) ? this.setState({ch9: false}) : this.setState({ch9: true});
     };
     checkPassportIDInput = (event) => {
-        this.setState({valuePassportIDInput: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch10: true}) : this.setState({ch10: false});
+        this.setState({valuePassportIDInput: event.target.value.replace(/[^\d\-\.\,\_]/g, '')});
+        (event.target.value.length === 0) ? this.setState({ch10: false}) : this.setState({ch10: true});
     };
     checkPassportRegistration = (event) => {
-        this.setState({valuePassportRegistration: event.target.value});
-        (event.target.value.length === 0) ? this.setState({ch11: true}) : this.setState({ch11: false});
+        this.setState({valuePassportRegistration: event.target.value.replace(/[^A-Za-zА-Яа-яЁё\s\w\d~`!@#$%^&*()_+-={}:";'<>?]/g, '')});
+        (event.target.value.length === 0) ? this.setState({ch11: false}) : this.setState({ch11: true});
     };
     savePassportData = (event) => {
         event.preventDefault();
         if (this.state.saveTag === true) {
-            updatePassportDataFirebase(
-                this.state.valuePassportSurname,
-                this.state.valuePassportName,
-                this.state.valuePassportThirdName,
-                this.state.valuePassportNumber,
-                this.state.valuePassportSex,
-                this.state.valuePassportDateofBirth,
-                this.state.valuePassportPlaceofBirth,
-                this.state.valuePassportPlaceInput,
-                this.state.valuePassportDateInput,
-                this.state.valuePassportIDInput,
-                this.state.valuePassportRegistration,
-                this.state.PrevTitle
-            );
+            if ((this.state.valuePassportSurname !== "") &&
+                (this.state.valuePassportName !== "") &&
+                (this.state.valuePassportThirdName !== "") &&
+                (this.state.valuePassportNumber !== "") &&
+                (this.state.valuePassportSex !== "") &&
+                (this.state.valuePassportDateofBirth !== "") &&
+                (this.state.valuePassportPlaceofBirth !== "") &&
+                (this.state.valuePassportPlaceInput !== "") &&
+                (this.state.valuePassportDateInput !== "") &&
+                (this.state.valuePassportIDInput !== "") &&
+                (this.state.valuePassportRegistration !== "")) {
+                updatePassportDataFirebase(
+                    this.state.valuePassportSurname,
+                    this.state.valuePassportName,
+                    this.state.valuePassportThirdName,
+                    this.state.valuePassportNumber,
+                    this.state.valuePassportSex,
+                    this.state.valuePassportDateofBirth,
+                    this.state.valuePassportPlaceofBirth,
+                    this.state.valuePassportPlaceInput,
+                    this.state.valuePassportDateInput,
+                    this.state.valuePassportIDInput,
+                    this.state.valuePassportRegistration,
+                    this.state.prevTitle
+                );
+                this.props.history.push('/firstpage/passportData/');
+            }
+            else alert("Поля не могут быть пустыми!");
+
         } else {
-            savePassportDataFirebase(
-                this.state.valuePassportSurname,
-                this.state.valuePassportName,
-                this.state.valuePassportThirdName,
-                this.state.valuePassportNumber,
-                this.state.valuePassportSex,
-                this.state.valuePassportDateofBirth,
-                this.state.valuePassportPlaceofBirth,
-                this.state.valuePassportPlaceInput,
-                this.state.valuePassportDateInput,
-                this.state.valuePassportIDInput,
-                this.state.valuePassportRegistration);
+            if ((this.state.ch1 === true)
+                && (this.state.ch2)
+                && (this.state.ch3)
+                && (this.state.ch4)
+                && (this.state.ch5)
+                && (this.state.ch6)
+                && (this.state.ch7)
+                && (this.state.ch8)
+                && (this.state.ch9)
+                && (this.state.ch10)
+                && (this.state.ch11)) {
+                savePassportDataFirebase(
+                    this.state.valuePassportSurname,
+                    this.state.valuePassportName,
+                    this.state.valuePassportThirdName,
+                    this.state.valuePassportNumber,
+                    this.state.valuePassportSex,
+                    this.state.valuePassportDateofBirth,
+                    this.state.valuePassportPlaceofBirth,
+                    this.state.valuePassportPlaceInput,
+                    this.state.valuePassportDateInput,
+                    this.state.valuePassportIDInput,
+                    this.state.valuePassportRegistration
+                );
+                this.props.history.push('/firstpage/passportData/');
+            } else alert("Заполните все поля!");
         }
-        this.props.history.push('/firstpage/passportData/');
     };
+
     deleteOne = (event) => {
         event.preventDefault();
         if (this.state.saveTag === true) {
@@ -136,72 +165,73 @@ export class NewPassportData extends React.Component {
             var gost = new ClassGost();
             newUser.on("value", snap => {
                 this.setState({
-                    valuePassportName: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportName: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\-]/g, '')
                 })
             });
             const newSurname = db4.child("Surname");
             newSurname.on("value", snap => {
                 this.setState({
-                    valuePassportSurname: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, ''),
-                    prevTitle: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportSurname: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, ''),
+                    prevTitle: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const newThirdName = db4.child("ThirdName");
             newThirdName.on("value", snap => {
                 this.setState({
-                    valuePassportThirdName: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportThirdName: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const Number = db4.child("Number");
             Number.on("value", snap => {
                 this.setState({
-                    valuePassportNumber: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportNumber: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const Sex = db4.child("Sex");
             Sex.on("value", snap => {
                 this.setState({
-                    valuePassportSex: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportSex: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const PlaceofBirth = db4.child("PlaceofBirth");
             PlaceofBirth.on("value", snap => {
                 this.setState({
-                    valuePassportPlaceofBirth: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportPlaceofBirth: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const DateofBirth = db4.child("DateofBirth");
             DateofBirth.on("value", snap => {
                 this.setState({
-                    valuePassportDateofBirth: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportDateofBirth: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const DateInput = db4.child("DateInput");
             DateInput.on("value", snap => {
                 this.setState({
-                    valuePassportDateInput: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportDateInput: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const PlaceInput = db4.child("PlaceInput");
             PlaceInput.on("value", snap => {
                 this.setState({
-                    valuePassportPlaceInput: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportPlaceInput: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const IDInput = db4.child("IDInput");
             IDInput.on("value", snap => {
                 this.setState({
-                    valuePassportIDInput: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportIDInput: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
             const PlaceRegistration = db4.child("PlaceRegistration");
             PlaceRegistration.on("value", snap => {
                 this.setState({
-                    valuePassportRegistration: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s]/g, '')
+                    valuePassportRegistration: gost.Decode(snap.val(), key_gost).replace(/[^\w\dА-Яа-яЁё\s\.\,\-\_]/g, '')
                 })
             });
         }
-    };
+    }
+    ;
 
     render() {
         return (<div className="newpassword">
@@ -213,6 +243,7 @@ export class NewPassportData extends React.Component {
                             <div className="newpassword-decoration_div">
                                 <input value={this.state.valuePassportSurname}
                                        name="passportSurname"
+                                       maxLength="80"
                                        className="newpassword-decoration_div_input"
                                        type="text"
                                        autoComplete="off"
@@ -221,6 +252,7 @@ export class NewPassportData extends React.Component {
                                        onChange={this.checkPassportSurname}/>
                                 <input value={this.state.valuePassportName}
                                        name="passportName"
+                                       maxLength="80"
                                        className="newpassword-decoration_div_input"
                                        type="text"
                                        autoComplete="off"
@@ -233,6 +265,7 @@ export class NewPassportData extends React.Component {
                                        name="passportThirdName"
                                        className="newpassword-decoration_div_input"
                                        type="text"
+                                       maxLength="80"
                                        autoComplete="off"
                                        placeholder="Отчество"
                                        onInput={this.checkPassportThirdName}
@@ -251,6 +284,7 @@ export class NewPassportData extends React.Component {
                                        name="passportNumber"
                                        className=" newpassword-decoration_div_input"
                                        type="text"
+                                       maxLength="80"
                                        autoComplete="off"
                                        placeholder="Серия и номер паспорта"
                                        onInput={this.checkPassportNumber}
@@ -268,6 +302,7 @@ export class NewPassportData extends React.Component {
                                    name="passportPlaceofBirth"
                                    className="newpassword-decoration newpassport_input"
                                    type="text"
+                                   maxLength="300"
                                    autoComplete="off"
                                    placeholder="Место рождения"
                                    onInput={this.checkPassportPlaceofBirth}
@@ -276,6 +311,7 @@ export class NewPassportData extends React.Component {
                                    name="passportPlaceInput"
                                    className="newpassword-decoration newpassport_input"
                                    type="text"
+                                   maxLength="300"
                                    autoComplete="off"
                                    placeholder="Место выдачи паспорта"
                                    onInput={this.checkPassportPlaceInput}
@@ -285,6 +321,7 @@ export class NewPassportData extends React.Component {
                                        name="passportIDInput"
                                        className="newpassword-decoration_div_input"
                                        type="text"
+                                       maxLength="80"
                                        autoComplete="off"
                                        placeholder="Код подразделения"
                                        onInput={this.checkPassportIDInput}
@@ -303,25 +340,19 @@ export class NewPassportData extends React.Component {
                                    className="newpassword-decoration newpassport_input"
                                    type="text"
                                    autoComplete="off"
+                                   maxLength="300"
                                    placeholder="Место регистрации"
                                    onInput={this.checkPassportRegistration}
                                    onChange={this.checkPassportRegistration}/>
                             <button type="submit"
                                     value="Submit"
-                                    disabled={(
-                                        this.state.ch1 && this.state.ch2 &&
-                                        this.state.ch3 && this.state.ch4 &&
-                                        this.state.ch5 && this.state.ch6 &&
-                                        this.state.ch7 && this.state.ch8 &&
-                                        this.state.ch9 && this.state.ch10 &&
-                                        this.state.ch11)}
                                     className={
-                                        (this.state.saveTag) || ((!this.state.ch1) &&
-                                            (!this.state.ch2) && (!this.state.ch3) &&
-                                            (!this.state.ch4) && (!this.state.ch5) &&
-                                            (!this.state.ch6) && (!this.state.ch7) &&
-                                            (!this.state.ch8) && (!this.state.ch9) &&
-                                            (!this.state.ch10) && (!this.state.ch11)) ? "form-autentification form-autentification-style form-button__modificate" : "form-autentification form-autentification-style"}>
+                                        (this.state.saveTag) || ((this.state.ch1) &&
+                                            (this.state.ch2) && (this.state.ch3) &&
+                                            (this.state.ch4) && (this.state.ch5) &&
+                                            (this.state.ch6) && (this.state.ch7) &&
+                                            (this.state.ch8) && (this.state.ch9) &&
+                                            (this.state.ch10) && (this.state.ch11)) ? "form-autentification form-autentification-style form-button__modificate" : "form-autentification form-autentification-style"}>
                                 <p>Сохранить</p></button>
                             <button type="submit"
                                     disabled={!(this.state.saveTag)}

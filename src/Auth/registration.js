@@ -19,6 +19,7 @@ export class Registration extends React.Component {
     };
 
     authChangeName = (event) => {
+        event.target.value=event.target.value.replace(/[^A-Za-zА-Яа-яЁё0-9]/, '');
         this.setState(
             {
                 userName: event.target.value
@@ -66,6 +67,7 @@ export class Registration extends React.Component {
                                        id="name"
                                        className="form-autentification__input form-autentification form-autentification-style form-input"
                                        name="username"
+                                       maxLength="50"
                                        placeholder="Введите имя нового пользователя"
                                        defaultValue={""}
                                        onInput={this.authChangeName}/>
@@ -75,6 +77,7 @@ export class Registration extends React.Component {
                                     autoComplete="off"
                                     id="password"
                                     name="password"
+                                    maxLength="50"
                                     placeholder="Введите пароль для нового пользователя"
                                     defaultValue={""}
                                     onInput={this.authChangePass}/>

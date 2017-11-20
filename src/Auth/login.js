@@ -20,12 +20,16 @@ export class Login extends React.Component {
     };
 
     authChangeName = (event) => {
+        event.target.value=event.target.value.replace(/[^A-Za-zА-Яа-яЁё0-9]/, '');
         this.setState(
             {
                 userName: event.target.value
             }
         );
-        (event.target.value.length === 0) ? this.setState({disabled: true}) : this.setState({disabled: false, auth:true});
+        (event.target.value.length === 0) ? this.setState({disabled: true}) : this.setState({
+            disabled: false,
+            auth: true
+        });
     };
 
     authChangePass = (event) => {
@@ -34,7 +38,10 @@ export class Login extends React.Component {
                 userPass: event.target.value
             }
         );
-        (event.target.value.length === 0) ? this.setState({disabled2: true}) : this.setState({disabled2: false, auth:true});
+        (event.target.value.length === 0) ? this.setState({disabled2: true}) : this.setState({
+            disabled2: false,
+            auth: true
+        });
     };
 
     authFirebase = (event) => {
@@ -74,19 +81,17 @@ export class Login extends React.Component {
                             <form name="login" className="form-autentification">
                                 <input type="text"
                                        autoComplete="off"
-                                       id="name"
                                        className="form-autentification__input form-autentification form-autentification-style form-input"
                                        name="username"
                                        placeholder="Имя пользователя"
-                                       defaultValue={""}
+                                       maxLength="50"
                                        onInput={this.authChangeName}/>
                                 <input type="password"
-                                       id="password"
                                        autoComplete="off"
                                        name="password"
+                                       maxLength="50"
                                        placeholder="Пароль"
                                        className="form-autentification__input form-autentification form-autentification-style form-input"
-                                       defaultValue={""}
                                        onInput={this.authChangePass}/>
                                 <button type="submit"
                                         name="button"
@@ -95,7 +100,7 @@ export class Login extends React.Component {
                                             "form-autentification form-autentification-style form-button__modificate" : "form-autentification form-autentification-style form-button"}
                                         onClick={this.authFirebase}><p>Войти</p></button>
                             </form>
-                            <h3 className={(this.state.auth)? "auth-yes":"auth-yes auth-no"}>Неправильный логин или пароль!</h3>
+                            <h3 className={(this.state.auth) ? "auth-yes" : "auth-yes auth-no"}>Неправильный логин или пароль!</h3>
                             <Link to="/registration"><p>Зарегистрироваться</p></Link>
                         </div>
                     </div>
